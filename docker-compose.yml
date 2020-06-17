@@ -22,7 +22,7 @@ services:
     container_name: app-server
     build:
       context: ${SERVER_LOCAL_PATH}
-      dockerfile: ${DOCKER_LOCAL_PATH}/server/Dockerfile
+      dockerfile: ${DOCKER_LOCAL_PATH}/${SERVER_LOCAL_FOLDER}/Dockerfile
     volumes:
       - ${SERVER_LOCAL_PATH}:/app
       - /app/node_modules
@@ -38,7 +38,7 @@ services:
     container_name: app-client
     build:
       context: ${ADMIN_LOCAL_PATH}
-      dockerfile: ${DOCKER_LOCAL_PATH}/client/Dockerfile
+      dockerfile: ${DOCKER_LOCAL_PATH}/${ADMIN_LOCAL_FOLDER}/Dockerfile
     depends_on:
       - server
       - postgres
