@@ -1,0 +1,56 @@
+version: '3.7'
+
+volumes:
+  postgres:
+
+services:
+  postgres:
+    container_name: app-db-postgres
+    image: postgres:11
+    restart: always
+    environment:
+      - POSTGRES_DB=${DOCKER_DATABASE_NAME}
+      - POSTGRES_USER=${DOCKER_DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DOCKER_DATABASE_PASSWORD}
+    volumes:
+      - postgres:/var/lib/postgresql
+      - postgres:/var/log/postgresql
+    ports:
+      - 5432:5432
+
+  server:
+    container_name: app-server
+    build:
+      context: ${SERVER_LOCAL_PATH}
+      dockerfile: ${DOCKER_LOCAL_PATH}/server/Dockerfile
+    volumes:
+      - ${SERVER_LOCAL_PATH}:/app
+      - /app/node_modules
+    ports:
+      - ${SERVER_LOCAL_PORT}:${SERVER_LOCAL_PORT}
+    logging:
+      driver: ${SERVER_LOGGING}
+    depends_on:
+      - postgres
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=development
+
+  admin:
+    container_name: app-admin
+    build:
+      context: ${ADMIN_LOCAL_PATH}
+      dockerfile: ${DOCKER_LOCAL_PATH}/admin/Dockerfile
+    depends_on:
+      - server
+      - postgres
+    logging:
+      driver: ${ADMIN_LOGGING}
+    volumes:
+      - ${ADMIN_LOCAL_PATH}:/app
+      - /app/node_modules
+    ports:
+      - ${ADMIN_LOCAL_PORT}:${ADMIN_LOCAL_PORT}
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=development
