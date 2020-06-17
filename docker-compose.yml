@@ -37,10 +37,10 @@ services:
       - NODE_ENV=development
 
   admin:
-    container_name: app-admin
+    container_name: app-client
     build:
       context: ${ADMIN_LOCAL_PATH}
-      dockerfile: ${DOCKER_LOCAL_PATH}/admin/Dockerfile
+      dockerfile: ${DOCKER_LOCAL_PATH}/client/Dockerfile
     depends_on:
       - server
       - postgres
