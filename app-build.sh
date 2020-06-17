@@ -30,4 +30,4 @@ fi
 
 echo "${GREEN}Building containers...${NC}"
 
-docker-compose up --force-recreate --build
+docker-compose up --force-recreate --build -d
