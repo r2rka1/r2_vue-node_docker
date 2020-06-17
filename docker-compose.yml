@@ -28,8 +28,6 @@ services:
       - /app/node_modules
     ports:
       - ${SERVER_LOCAL_PORT}:${SERVER_LOCAL_PORT}
-    logging:
-      driver: ${SERVER_LOGGING}
     depends_on:
       - postgres
     environment:
@@ -44,8 +42,6 @@ services:
     depends_on:
       - server
       - postgres
-    logging:
-      driver: ${ADMIN_LOGGING}
     volumes:
       - ${ADMIN_LOCAL_PATH}:/app
       - /app/node_modules
